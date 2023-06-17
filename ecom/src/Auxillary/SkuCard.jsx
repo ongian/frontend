@@ -2,8 +2,20 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import Rating from './Rating';
-
+import { useNavigate } from 'react-router-dom';
 const SkuCard = ({title, id, price, image, rating, medium = '3'}) => {
+  const navigate = useNavigate();
+  const addToWishlist = (id) => {
+    let wishlistLS = JSON.parse(localStorage.getItem('wishlist')) || [];
+    if(wishlistLS.includes(id)){
+      wishlistLS = wishlistLS.filter((w) => w !== id)
+    } else {
+      wishlistLS.push(id)
+    }
+    localStorage.setItem('wishlist', JSON.stringify(wishlistLS));
+    navigate(0);
+  }
+  
   const ratingDisplay = rating ? (
     <div className="rating d-flex align-items-center justify-content-between">
       <span className="stars">
@@ -29,7 +41,7 @@ const SkuCard = ({title, id, price, image, rating, medium = '3'}) => {
             </Link>
             <div className="d-flex align-items-center justify-content-between">
               <Link to={"/product/" + id} className="btn btn-primary">Buy now</Link>
-              <Button variant="secondary">Wishlist</Button>
+              <Button onClick={() => addToWishlist(id)} variant="secondary">Wishlist</Button>
             </div>
         </div>
     </div>

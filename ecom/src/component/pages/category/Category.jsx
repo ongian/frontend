@@ -57,14 +57,21 @@ const Category = () => {
                     {params.category.toUpperCase().replace('-', ' ')}
                 </h1>
                 <Row>
-                    <div className="col-md-3">
-                        <Filter filterProps={filters} />
-                    </div>
-                    <div className="col-md-9">
-                        <Row>
-                            {error ? (<h1>{error}</h1>) : productDisplay}
-                        </Row>
-                    </div>
+                    {
+                        error ? (<h1>{error}</h1>) : (
+                            <>
+                                <div className="col-md-3">
+                                    <Filter filterProps={filters} />
+                                </div>
+                                <div className="col-md-9">
+                                    <Row>
+                                        {productDisplay}
+                                    </Row>
+                                </div>
+                            </>
+                        )
+                    }
+                    
                 </Row>
             </Container>
         </section>

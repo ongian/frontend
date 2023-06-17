@@ -4,12 +4,12 @@ import { Container, Row, Col, Breadcrumb } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from '../../../Auxillary/Rating';
 import SkeletonComponent from '../../../Auxillary/SkeletonComponent';
+import Counter from '../../../Auxillary/Counter';
 const Product = () => {
   const param = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [itemCount, setItemCount] = useState(1);
-
+  const [itemCount, setItemCount] = useState(1)
   useEffect(() => {
     const fetchProduct = async() => {
       setLoading(true)
@@ -29,21 +29,8 @@ const Product = () => {
     fetchProduct()
   }, [])
 
-  const addItem = () => {
-    setItemCount(prev => prev + 1);
-  }
-
-  const substractItem = (e) => {
-    if(itemCount > 0){
-      setItemCount(prev => prev - 1)
-    } else {
-      e.preventDefault();
-    }
-  }
-
-  const onChangeValue = (e) => {
-    const value = e.target.value
-    setItemCount(isNaN(value) ? 0 : Number(e.target.value))
+  const countItem = (count) => {
+    setItemCount(count)
   }
 
   const PDP = product ? (
@@ -68,11 +55,7 @@ const Product = () => {
           <p>{product.description}</p>
           <h3>Total: <strong>${(product.price * itemCount).toFixed(2)}</strong></h3>
           <div className="counter-and-buttons d-md-flex align-items-center justify-content-between">
-            <div className="counter d-flex">
-              <span onClick={substractItem} className="decrement btn btn-primary">-</span>
-              <input value={itemCount} onChange={onChangeValue} />
-              <span onClick={addItem} className="increment btn btn-primary">+</span>
-            </div>
+            <Counter countItem={countItem}/>
             <div className="buttons">
               <button className="btn btn-primary">Checkout</button>
               <button className="btn btn-secondary">Add to cart</button>

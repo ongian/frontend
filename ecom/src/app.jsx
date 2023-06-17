@@ -8,6 +8,7 @@ import './bootstrap.min.css';
 import './style.css';
 import Product from './component/pages/product/Product';
 import Footer from './component/Footer';
+import Wishlist from './component/pages/wishlist/Wishlist';
 
 const App = () => {
     return (
@@ -16,6 +17,7 @@ const App = () => {
             <Routes>
                 <Route path="/category/:category" element={<Category />} />
                 <Route path="/product/:id" element={<Product />} />
+                <Route path="/wishlist" element={<Wishlist />} />
                 <Route path="/" element={<Home />} />
             </Routes>
             <Footer />
