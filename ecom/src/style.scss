@@ -214,6 +214,44 @@ nav.navbar {
         margin: 10px auto;
     }
 }
+.cart {
+    .row {
+        border-bottom: 1px solid $dark;
+        padding: 15px 0;
+    }
+    .col-md-2 {
+        img {
+            width: auto;
+            max-width: 200px;
+            max-height: 75px;
+        }
+    }
+    .col-md-8 {
+        a {
+            text-decoration: none;
+        }
+        p {
+            margin-bottom: 5px;
+        }
+        button {
+            border: none;
+            background: none;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #f94f4f;
+            padding: 0;
+        }
+    }
+    .counter {
+        input {
+            max-width: 60px;
+            text-align: center;
+        }
+    }
+    button.btn.btn-primary {
+        height: auto;
+    }
+}
 .filters {
     label {
         display: block;
@@ -328,6 +366,11 @@ footer {
             opacity: .75;
             transition: all .5s ease;
         }
+    }
+}
+.col-sm-12 {
+    h1 {
+        margin-top: 50px;
     }
 }
 @media(max-width: 992px){

@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import Rating from '../../../Auxillary/Rating';
 import SkeletonComponent from '../../../Auxillary/SkeletonComponent';
 import Counter from '../../../Auxillary/Counter';
+import { useNavigate } from 'react-router-dom';
 const Product = () => {
   const param = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [itemCount, setItemCount] = useState(1)
+  const [itemCount, setItemCount] = useState(1);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProduct = async() => {
       setLoading(true)
@@ -33,6 +35,27 @@ const Product = () => {
     setItemCount(count)
   }
 
+  const addToCart = (e) => {
+    e.preventDefault();
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const item = {
+      id: param.id,
+      title: product.title,
+      price: product.price,
+      count: itemCount,
+      image: product.image
+    }
+    const itemInCart = cartItems.filter((c) => c.id === param.id)
+    if(itemInCart.length){
+      const cartIndex = cartItems.findIndex((i) => i.id === param.id);
+      cartItems[cartIndex].count = itemCount;
+      localStorage.setItem('cart', JSON.stringify(cartItems));
+      navigate(0)
+    } else {
+      localStorage.setItem('cart', JSON.stringify([...cartItems, item]));
+      navigate(0)
+    }
+  }
   const PDP = product ? (
     <Container>
       <Breadcrumb className="my-4">
@@ -58,7 +81,7 @@ const Product = () => {
             <Counter countItem={countItem}/>
             <div className="buttons">
               <button className="btn btn-primary">Checkout</button>
-              <button className="btn btn-secondary">Add to cart</button>
+              <button className="btn btn-secondary" onClick={addToCart}>Add to cart</button>
             </div>
           </div>
         </Col>

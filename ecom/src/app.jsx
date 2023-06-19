@@ -9,6 +9,7 @@ import './style.css';
 import Product from './component/pages/product/Product';
 import Footer from './component/Footer';
 import Wishlist from './component/pages/wishlist/Wishlist';
+import Cart from './component/pages/cart/Cart';
 
 const App = () => {
     return (
@@ -18,6 +19,7 @@ const App = () => {
                 <Route path="/category/:category" element={<Category />} />
                 <Route path="/product/:id" element={<Product />} />
                 <Route path="/wishlist" element={<Wishlist />} />
+                <Route path="/cart" element={<Cart />} />
                 <Route path="/" element={<Home />} />
             </Routes>
             <Footer />

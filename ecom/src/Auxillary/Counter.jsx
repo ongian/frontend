@@ -4,7 +4,8 @@ const Counter = ({countItem}) => {
     const [itemCount, setItemCount] = useState(1);
     useEffect(() => {
         countItem(itemCount)
-    }, [itemCount])
+        console.log(itemCount)
+    }, [itemCount, countItem])
     const addItem = () => {
         setItemCount(prev => prev + 1);
     }
