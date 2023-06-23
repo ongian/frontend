@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react'
 import { Row, Container, Col } from 'react-bootstrap';
 import SkuCard from '../../../Auxillary/SkuCard';
 import SkeletonCard from '../../../Auxillary/SkeletonCard';
-
+import { useSelector } from 'react-redux';
 const Wishlist = () => {
-    const [productID, setProductID] = useState(JSON.parse(localStorage.getItem('wishlist')) || []);
+    const productID = useSelector(state => state.wishlist.wishlist)
     const [wishlistProducts, setWishlistProducts] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setloading] = useState(false)

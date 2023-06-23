@@ -314,6 +314,56 @@ nav.navbar .navbar-nav a span.count {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
 }
 
+.checkout .form-group {
+  display: block;
+  margin-bottom: 15px;
+}
+.checkout .form-group label {
+  display: block;
+}
+.checkout .form-group input {
+  width: 100%;
+  border: 1px solid #323232;
+}
+.checkout .checkout-item {
+  display: block;
+}
+.checkout .checkout-item div {
+  display: inline-block;
+  vertical-align: middle;
+}
+.checkout .checkout-item .checkout-item__image {
+  width: 20%;
+  position: relative;
+  padding: 5px;
+  height: 100px;
+}
+.checkout .checkout-item .checkout-item__image img {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  max-height: 100%;
+}
+.checkout .checkout-item .checkout-item__image span {
+  position: absolute;
+  z-index: 2;
+  background: #323232;
+  color: #fff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  top: 0;
+  right: 0;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: bold;
+}
+.checkout .checkout-item .checkout-item__title {
+  width: 65%;
+  padding: 0 10px;
+}
+
 header .container {
   display: flex;
   align-items: center;

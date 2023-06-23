@@ -345,6 +345,57 @@ nav.navbar {
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.05);
     }
 }
+.checkout {
+    .form-group {
+        display: block;
+        margin-bottom: 15px;
+        label {
+            display: block;
+        }
+        input {
+            width: 100%;
+            border: 1px solid $dark;
+        }
+    }
+    .checkout-item {
+        display: block;
+        div {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .checkout-item__image {
+            width: 20%;
+            position: relative;
+            padding: 5px;
+            height: 100px;
+            img {
+                max-width: 100%;
+                width: auto;
+                height: auto;
+                max-height: 100%;
+            }
+            span {
+                position: absolute;
+                z-index: 2;
+                background: $dark;
+                color: #fff;
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                top: 0;
+                right: 0;
+                text-align: center;
+                line-height: 20px;
+                font-size: 12px;
+                font-weight: bold;
+            }
+        }
+        .checkout-item__title {
+            width: 65%;
+            padding: 0 10px;
+        }
+    }
+}
 header {
     .container {
         display: flex;

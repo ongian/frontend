@@ -1,30 +1,31 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import Rating from './Rating';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToWishlist, removeToWishlist } from '../component/redux/wishlistSlice';
 const SkuCard = ({title, id, price, image, rating, medium = '3'}) => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const addToWishlist = (id) => {
-    let wishlistLS = JSON.parse(localStorage.getItem('wishlist')) || [];
-    if(wishlistLS.includes(id)){
-      wishlistLS = wishlistLS.filter((w) => w !== id)
+
+  const wishlists = useSelector(state => state.wishlist.wishlist);
+
+  const dispatch = useDispatch();
+  
+  const wishlistHandler = (id) => {
+    if(wishlists.includes(id)){
+      dispatch(removeToWishlist(id))
     } else {
-      wishlistLS.push(id)
+      dispatch(addToWishlist(id))
     }
-    localStorage.setItem('wishlist', JSON.stringify(wishlistLS));
-    navigate(0);
   }
 
   const wishlistText = (id) => {
-    const wishlistItem = JSON.parse(localStorage.getItem('wishlist')) || [];
-    if(location.pathname === '/wishlist') {
-      return 'Remove'
+    if(wishlists.includes(id)){
+      return 'remove'
     } else {
-      return wishlistItem.includes(id) ? 'Remove' : 'Wishlist';
+      return 'wishlist'
     }
   }
+
   const ratingDisplay = rating ? (
     <div className="rating d-flex align-items-center justify-content-between">
       <span className="stars">
@@ -50,7 +51,7 @@ const SkuCard = ({title, id, price, image, rating, medium = '3'}) => {
             </Link>
             <div className="d-flex align-items-center justify-content-between">
               <Link to={"/product/" + id} className="btn btn-primary">Buy now</Link>
-              <Button onClick={() => addToWishlist(id)} variant="secondary">{wishlistText(id)}</Button>
+              <Button onClick={() => wishlistHandler(id)} variant="secondary">{wishlistText(id)}</Button>
             </div>
         </div>
     </div>
