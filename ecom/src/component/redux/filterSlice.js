@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const filterState = {
     categories: [],
-    rates: null,
+    rates: 1,
     prices: {
         min: 0,
         max: 0
@@ -23,14 +23,17 @@ export const filterSlice = createSlice({
         },
         setPriceMin: (state, action) => {
             const prices = state.prices;
-            state.prices.min = action.payload
+            state.prices.min = Number(action.payload).toFixed();
         },
         setPriceMax: (state, action) => {
             const prices = state.prices;
-            state.prices.max = action.payload
+            state.prices.max = Number(action.payload).toFixed();
+        },
+        setRating: (state, action) => {
+            state.rates = action.payload;
         }
     }
 })
 
-export const {setCategories, setPriceMin, setPriceMax} = filterSlice.actions;
+export const {setCategories, setPriceMin, setPriceMax, setRating} = filterSlice.actions;
 export default filterSlice.reducer;

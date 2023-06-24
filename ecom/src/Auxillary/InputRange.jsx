@@ -67,7 +67,6 @@ const InputRange = ({min, max}) => {
                 dispatch({type: 'UPDATE_MAX_RANGE', payload: 100 - (e.target.value / max) * 100 + '%'})
             }
         }
-        
     }
     
     const minimum_price = prices.min === undefined ? '' : prices.min.toString();

@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import InputRange from './InputRange';
 import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
-import { setCategories } from '../component/redux/filterSlice';
+import { setCategories, setRating } from '../component/redux/filterSlice';
 import Rating from './Rating';
 const Filter = ({filterProps}) => {
     const dispatch = useDispatch();
@@ -37,24 +37,9 @@ const Filter = ({filterProps}) => {
 
     const checkboxHandler = (e) => {
         dispatch(setCategories(e.target.value))
-        // const catIndex = tobeFilter.categories.indexOf(e.target.value);
-        // if(catIndex === -1){
-        //     setTobeFilter((pf) => ({
-        //         ...pf,
-        //         categories: [...pf.categories, e.target.value]
-        //     }))
-        // } else {
-        //     setTobeFilter((pf) => ({
-        //         ...pf,
-        //         categories: pf.categories.filter(c => c !== e.target.value)
-        //     }))
-        // }
     }
     const ratingHandler = (r) => {
-        setTobeFilter((p) => ({
-            ...p,
-            rates: r
-        }))
+        dispatch(setRating(r))
     }
 
     const displayFilters = filters ? (
@@ -75,11 +60,11 @@ const Filter = ({filterProps}) => {
             <hr />
             <h4>By ratings</h4>
             <div className="ratings">
-                <label onClick={() => ratingHandler(5)}><Rating rate={5} /> 5</label>
-                <label onClick={() => ratingHandler(4)}><Rating rate={4} /> 4 up</label>
-                <label onClick={() => ratingHandler(3)}><Rating rate={3} /> 3 up</label>
-                <label onClick={() => ratingHandler(2)}><Rating rate={2} /> 2 up</label>
-                <label onClick={() => ratingHandler(1)}><Rating rate={1} /> 1 up</label>
+                {[...Array(5)].map((a, i) => i+1).sort((f, s) => s-f).map((v) => (
+                    <label onClick={() => ratingHandler(v)} key={v} >
+                        <Rating rate={v} /> {v === 5 ? 5 : v + ' up'}
+                    </label>
+                ))}
             </div>
         </>
     ) : null;
