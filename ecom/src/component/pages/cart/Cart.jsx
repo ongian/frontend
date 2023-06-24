@@ -7,13 +7,15 @@ import { addToCart, removeToCart } from '../../redux/cartSlice';
 const Cart = () => {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart);
-    const [total, setTotal] = cart.reduce((a, i) => a + (i.price * i.count), 0);
-
+    const [total, setTotal] = useState(0);
+    useEffect(() => {
+        setTotal(cart.reduce((a, i) => a + (i.count * i.price), 0));
+    }, [cart])
     const addItem = (id) => {
         dispatch(addToCart(id))
     }
 
-    const substractItem = (e, id) => {
+    const substractItem = (id) => {
         dispatch(removeToCart(id))
     }
 
@@ -25,15 +27,6 @@ const Cart = () => {
         addCart[cartIndex].count = isNaN(value) ? 0 : Number(e.target.value);
         localStorage.setItem('cart', JSON.stringify(addCart));
         setCart(addCart)
-    }
-    
-    const removeToCart = (id) => {
-        const cartItems = [...cart];
-        const removeIndex = cartItems.findIndex((i) => i.id === id);
-        cartItems.splice(removeIndex, 1);
-        localStorage.setItem('cart', JSON.stringify(cartItems));
-        setCart(cartItems);
-        navigate(0);
     }
 
     const checkOut = () => {
@@ -51,11 +44,11 @@ const Cart = () => {
                         <Link to={"/product/" + c.id}>{c.title}</Link>
                         <p><strong>${c.price}</strong></p>
                         <div className="counter d-flex justify-content-center justify-content-md-start">
-                            <span onClick={(e) => {substractItem(e, c.id)}} className="decrement btn btn-primary">-</span>
+                            <span onClick={() => {substractItem(c.id)}} className="decrement btn btn-primary">-</span>
                             <input value={c.count} onChange={(e) => {onChangeValue(e, c.id)}} />
                             <span onClick={() => {addItem(c.id)}} className="increment btn btn-primary">+</span>
                         </div>
-                        <button onClick={() => removeToCart(c.id)}>Remove</button>
+                        <button onClick={() => substractItem({id: c.id})}>Remove</button>
                     </div>
                 </Col>
                 <Col sm={3} md={2} className="d-flex align-items-center justify-content-center">
@@ -67,7 +60,7 @@ const Cart = () => {
         ))}
         <Row>
             <Col sm={12}>
-                <h3 className="text-end">Total: {total}</h3>
+                <h3 className="text-end">Total: ${total.toFixed(2)}</h3>
             </Col>
         </Row>
         <Col sm={12} className="text-end py-4">

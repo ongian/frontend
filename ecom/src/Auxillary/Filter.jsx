@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import InputRange from './InputRange';
-
+import { createSlice } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { setCategories } from '../component/redux/filterSlice';
 import Rating from './Rating';
 const Filter = ({filterProps}) => {
+    const dispatch = useDispatch();
     const [filters, setFilters] = useState({
         categories: [],
         rates: [],
@@ -33,18 +36,19 @@ const Filter = ({filterProps}) => {
     }, [filterProps]);
 
     const checkboxHandler = (e) => {
-        const catIndex = tobeFilter.categories.indexOf(e.target.value);
-        if(catIndex === -1){
-            setTobeFilter((pf) => ({
-                ...pf,
-                categories: [...pf.categories, e.target.value]
-            }))
-        } else {
-            setTobeFilter((pf) => ({
-                ...pf,
-                categories: pf.categories.filter(c => c !== e.target.value)
-            }))
-        }
+        dispatch(setCategories(e.target.value))
+        // const catIndex = tobeFilter.categories.indexOf(e.target.value);
+        // if(catIndex === -1){
+        //     setTobeFilter((pf) => ({
+        //         ...pf,
+        //         categories: [...pf.categories, e.target.value]
+        //     }))
+        // } else {
+        //     setTobeFilter((pf) => ({
+        //         ...pf,
+        //         categories: pf.categories.filter(c => c !== e.target.value)
+        //     }))
+        // }
     }
     const ratingHandler = (r) => {
         setTobeFilter((p) => ({
@@ -52,12 +56,7 @@ const Filter = ({filterProps}) => {
             rates: r
         }))
     }
-    const getPrice = (price) => {
-        setTobeFilter((p) => ({
-            ...p,
-            prices: [price.min, price.max]
-        }))
-    }
+
     const displayFilters = filters ? (
         <>
             <h3>Filter:</h3>
@@ -72,7 +71,7 @@ const Filter = ({filterProps}) => {
             </div>
             <hr />
             <h4>By Price</h4>
-            <InputRange min={filters.prices[0]} max={filters.prices[1]} getPrice={getPrice}/>
+            <InputRange min={filters.prices[0]} max={filters.prices[1]} />
             <hr />
             <h4>By ratings</h4>
             <div className="ratings">

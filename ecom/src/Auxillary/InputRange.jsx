@@ -1,23 +1,9 @@
-import React, {useState, useEffect, useReducer} from 'react'
+import React, {useEffect, useReducer} from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { setPriceMin, setPriceMax } from '../component/redux/filterSlice';
 
 const reducer = (state, action) => {
     switch (action.type) {
-        case 'UPDATE_MIN_PRICE':
-        return {
-            ...state,
-            price: {
-                ...state.price,
-                min: action.payload
-            }
-        };
-        case 'UPDATE_MAX_PRICE':
-        return {
-            ...state,
-            price: {
-                ...state.price,
-                max: action.payload
-            }
-        };
         case 'UPDATE_MIN_RANGE':
         return {
             ...state,
@@ -38,61 +24,54 @@ const reducer = (state, action) => {
             return state;
     }
 }
-const InputRange = ({min, max, getPrice}) => {
-    const initilState = {
-        price: {
-            min: min,
-            max: max
-        },
+const InputRange = ({min, max}) => {
+    const prices = useSelector(state => state.filters.prices);
+    const dispatchRx = useDispatch();
+    const initialState = {
         rangeStyle: {
             min: '0%',
             max: '0%'
         }
     };
-    const [state, dispatch] = useReducer(reducer, initilState);
+    const [state, dispatch] = useReducer(reducer, initialState);
     useEffect(() => {
-        dispatch({type: 'UPDATE_MIN_PRICE', payload: parseInt(min)});
-        dispatch({type: 'UPDATE_MAX_PRICE', payload: parseInt(max)});
+        dispatchRx(setPriceMin(min))
+        dispatchRx(setPriceMax(max))
     }, [min, max])
 
     const priceInputEvent = (e) => {
         if (e.target.className === 'input-min'){
-            dispatch({type: 'UPDATE_MIN_PRICE', payload: parseInt(e.target.value)})
             dispatch({type: 'UPDATE_MIN_RANGE', payload: (e.target.value / max) * 100 + '%'})
-            getPrice(state.price)
+            
+            dispatchRx(setPriceMin(parseInt(e.target.value)))
         } else {
-            dispatch({type: 'UPDATE_MAX_PRICE', payload: parseInt(e.target.value)})
             dispatch({type: 'UPDATE_MAX_RANGE', payload: 100 - (e.target.value / max) * 100 + '%'})
-            getPrice(state.price)
+            
+            dispatchRx(setPriceMax(parseInt(e.target.value)))
         }
     }
 
     const rangeInputEvent = (e) => {
-        if(state.price.max - state.price.min < 10){
+        if(prices.max - prices.min < 10){
             if(e.target.className === 'range-min'){
-                dispatch({type: 'UPDATE_MIN_PRICE', payload: price.max - 10});
-                getPrice(state.price)
+                dispatchRx(setPriceMin(prices.max - 10))
             } else {
-                dispatch({type: 'UPDATE_MAX_PRICE', payload: price.min + 10});
-                getPrice(state.price)
+                dispatchRx(setPriceMax(prices.min + 10))
             }
         } else {
             if(e.target.className === 'range-min'){
-                dispatch({type: 'UPDATE_MIN_PRICE', payload: parseInt(e.target.value)})
+                dispatchRx(setPriceMin(parseInt(e.target.value)))
                 dispatch({type: 'UPDATE_MIN_RANGE', payload: (e.target.value / max) * 100 + '%'})
-                getPrice(state.price)
             } else {
-                dispatch({type: 'UPDATE_MAX_PRICE', payload: parseInt(e.target.value)})
+                dispatchRx(setPriceMax(parseInt(e.target.value)))
                 dispatch({type: 'UPDATE_MAX_RANGE', payload: 100 - (e.target.value / max) * 100 + '%'})
-                getPrice(state.price)
             }
         }
         
     }
     
-    const minimum_price = state.price.min === undefined ? '' : state.price.min.toString();
-    const maximum_price = state.price.max === undefined ? '' : state.price.max.toString();
-    console.log(state.price.min)
+    const minimum_price = prices.min === undefined ? '' : prices.min.toString();
+    const maximum_price = prices.max === undefined ? '' : prices.max.toString();
     return (
         <>
             <div className="price-input">

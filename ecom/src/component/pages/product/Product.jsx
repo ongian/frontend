@@ -81,7 +81,7 @@ const Product = () => {
     </Container>
   ) : null;
   
-  const ske = (
+  const skeleton = (
       <SkeletonComponent loading={loading}>
         <Container className="my-4">
           <p style={{maxWidth: '400px'}}></p>
@@ -113,7 +113,7 @@ const Product = () => {
   )
   return (
     <section className="pdp">
-      {ske}
+      {skeleton}
       {PDP}
     </section>
   )
