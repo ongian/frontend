@@ -7,14 +7,14 @@ import SkeletonComponent from '../../../Auxillary/SkeletonComponent';
 import Counter from '../../../Auxillary/Counter';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
-//import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 const Product = () => {
   const param = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [itemCount, setItemCount] = useState(1);
   const dispatch = useDispatch();
-  //const navigate = useNavigate();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProduct = async() => {
       setLoading(true)
@@ -48,10 +48,23 @@ const Product = () => {
     }
     dispatch(addToCart(item))
   }
+  const checkout = () => {
+    const item = {
+      count: itemCount,
+      price: product.price,
+      image: product.image,
+      title: product.title,
+      id: product.id
+    }
+    localStorage.setItem('checkout', JSON.stringify([item]));
+    navigate('/checkout')
+  }
   const PDP = product ? (
     <Container>
       <Breadcrumb className="my-4">
         <Link to="/">Home</Link>
+        <span> / </span>
+        <Link to={"/category/" + product.category}>{product.category}</Link>
         <span> / </span>
         <Link to="#">{product.title}</Link>
       </Breadcrumb>
@@ -72,7 +85,7 @@ const Product = () => {
           <div className="counter-and-buttons d-md-flex align-items-center justify-content-between">
             <Counter countItem={countItem}/>
             <div className="buttons">
-              <button className="btn btn-primary">Checkout</button>
+              <button className="btn btn-primary" onClick={checkout}>Checkout</button>
               <button className="btn btn-secondary" onClick={addItemToCart}>Add to cart</button>
             </div>
           </div>

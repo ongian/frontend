@@ -225,11 +225,16 @@ nav.navbar .navbar-nav a span.count {
 
 .filters label {
   display: block;
-  padding: 3px 0px;
+  padding: 3px 7px;
   text-transform: uppercase;
 }
 .filters label input[type=checkbox] {
   transform: scale(1.25);
+}
+.filters label.active, .filters label:hover {
+  background: #55595c;
+  color: #fff;
+  transition: all 0.5s ease;
 }
 .filters label span {
   margin: 0 0 0 5px;

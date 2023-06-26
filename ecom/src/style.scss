@@ -255,10 +255,15 @@ nav.navbar {
 .filters {
     label {
         display: block;
-        padding: 3px 0px;
+        padding: 3px 7px;
         text-transform: uppercase;
         input[type="checkbox"] {
             transform: scale(1.25);
+        }
+        &.active, &:hover {
+            background: #55595c;
+            color: #fff;
+            transition: all .5s ease;
         }
         span {
             margin: 0 0 0 5px;

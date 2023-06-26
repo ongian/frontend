@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { setCategories, setRating } from '../component/redux/filterSlice';
 import Rating from './Rating';
 const Filter = ({filterProps}) => {
+    const [activeRating, setActiveRating] = useState(0);
     const dispatch = useDispatch();
     const [filters, setFilters] = useState({
         categories: [],
@@ -39,7 +40,10 @@ const Filter = ({filterProps}) => {
         dispatch(setCategories(e.target.value))
     }
     const ratingHandler = (r) => {
-        dispatch(setRating(r))
+        dispatch(setRating(r));
+        setActiveRating((a) => {
+            return a === r ? 0 : r
+        })
     }
 
     const displayFilters = filters ? (
@@ -61,7 +65,7 @@ const Filter = ({filterProps}) => {
             <h4>By ratings</h4>
             <div className="ratings">
                 {[...Array(5)].map((a, i) => i+1).sort((f, s) => s-f).map((v) => (
-                    <label onClick={() => ratingHandler(v)} key={v} >
+                    <label onClick={() => ratingHandler(v)} key={v} className={activeRating === v ? 'active' : null}>
                         <Rating rate={v} /> {v === 5 ? 5 : v + ' up'}
                     </label>
                 ))}

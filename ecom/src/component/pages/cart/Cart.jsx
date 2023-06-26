@@ -5,7 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { addToCart, removeToCart } from '../../redux/cartSlice';
 const Cart = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const cart = useSelector(state => state.cart.cart);
     const [total, setTotal] = useState(0);
     useEffect(() => {

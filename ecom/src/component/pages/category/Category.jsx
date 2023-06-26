@@ -9,11 +9,12 @@ const Category = () => {
     const filter = useSelector(state => state.filters);
     const params = useParams();
     const [loading, setLoading] = useState(false);
-    const [products, setProducts] = useState(null);
+    const [products, setProducts] = useState([]);
     // Filters state that passed to each different filter components
     const [filters, setFilters] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [error, setError] = useState(null);
+    const [ready, setReady] = useState(false)
     useEffect(() => {
         const requestProducts = async() => {
             try {
@@ -39,29 +40,33 @@ const Category = () => {
     }, []);
 
     useEffect(() => {
-        let filteredByCategories = [];
-        let filteredByRates = [];
-        let filteredByPrices = [];
-        let combinedFilters = [];
-        const minPrice = filter.prices.min;
-        const maxPrice = filter.prices.max;
-        if(filter.categories.length > 0){
-            filteredByCategories = products.filter(p => filter.categories.includes(p.category))
-        }
-        if(filter.rates > 1) {
-            filteredByRates = products.filter(p => p.rating.rate > filter.rates)
-        }
-        // if(minPrice > Math.min(filters.map((f => f.price))) && maxPrice < Math.max(filters.map((f => f.price)))){
-        //     console.log('Min Test')
-        // }
-        combinedFilters = [...filteredByCategories, ...filteredByRates];
-        const updatedCombinedFilters = combinedFilters.filter((item, index, arr) => index === arr.findIndex(f => f.id === item.id))
+        const updatedCombinedFilters = products.filter((sku) => {
+            // Apply category filter
+            if (filter.categories.length > 0 && !filter.categories.includes(sku.category)) {
+                return false;
+            }
+        
+            // Apply rate filter
+            if (sku.rating.rate <= filter.rates) {
+                return false;
+            }
+        
+            // Apply price filter
+            if (sku.price.toFixed() < Number(filter.prices.min) || sku.price.toFixed() > Number(filter.prices.max)) {
+                return false;
+            }
+        
+            // If none of the filters exclude the SKU, include it in the filtered data
+            return true;
+        });
         setFilteredProducts(updatedCombinedFilters);
         
-    }, [filter])
-    console.log(filteredProducts)
-    const productDisplay = products ? 
-        products.map(p => 
+    }, [filter]);
+
+
+    //console.log(filteredProducts)
+    const productDisplay = filteredProducts ? 
+        filteredProducts.map(p => 
             <SkuCard 
                 key={p.id} 
                 title={p.title} 
@@ -90,7 +95,7 @@ const Category = () => {
                                 </div>
                                 <div className="col-md-9">
                                     <Row>
-                                        {productDisplay}
+                                        {filteredProducts.length ? productDisplay : <h2 style={{textAlign: 'center'}}>No Products Matched!</h2>}
                                     </Row>
                                 </div>
                             </>
