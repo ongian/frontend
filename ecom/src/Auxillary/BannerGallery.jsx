@@ -3,6 +3,10 @@ import { useState, useEffect } from "react";
 import { Container } from "react-bootstrap";
 import useCategory from "./useCategory";
 import { Link } from "react-router-dom";
+import electronics from '../images/electronics.jpg';
+import jewelery from '../images/jewelery.jpg';
+import mensclothing from '../images/mens-clothing.jpg';
+import womensclothing from '../images/womens-clothing.jpg';
 const BannerGallery = () => {
     const categories = useCategory();
     let [activeBanner, setActiveBanner] = useState(0);
@@ -30,12 +34,24 @@ const BannerGallery = () => {
         setActiveBanner(i);
         console.log(activeBanner)
     }
+    let imageBanner = (category) => {
+        if(category === 'electronics') {
+            return `url(${electronics})`
+        } else if(category === 'jewelery'){
+            return `url(${jewelery})`
+        } else if(category === "men's clothing"){
+            return `url(${mensclothing})`
+        } else {
+            return `url(${womensclothing})`
+        }
+    }
+    console.log(categories)
     const mapBanners = categories ? (
         <>
             {
                 categories.map((c, i) =>
                     (
-                        <div key={c} className={i === activeBanner ? 'active' : null} style={{background: 'url(./images/' + c.replace("'", '').replace(' ', '-') + '.jpg)'}}>
+                        <div key={c} className={i === activeBanner ? 'active' : null} style={{backgroundImage: imageBanner(c)}}>
                             <div className="overlay"></div>
                             <Container>
                                 <h4>{c.toUpperCase()}</h4>
