@@ -330,8 +330,15 @@ nav.navbar .navbar-nav a span.count {
   width: 100%;
   border: 1px solid #323232;
 }
+.checkout .checkout-item-total {
+  font-size: 24px;
+  font-weight: bold;
+  padding: 10px;
+}
 .checkout .checkout-item {
   display: block;
+  border-bottom: 1px solid #323232;
+  padding: 10px;
 }
 .checkout .checkout-item div {
   display: inline-block;
