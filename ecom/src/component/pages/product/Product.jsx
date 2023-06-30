@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import Rating from '../../../Auxillary/Rating';
 import SkeletonComponent from '../../../Auxillary/SkeletonComponent';
 import Counter from '../../../Auxillary/Counter';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addToCart } from '../../redux/cartSlice';
 import { useNavigate } from 'react-router-dom';
 const Product = () => {
@@ -15,6 +15,7 @@ const Product = () => {
   const [itemCount, setItemCount] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const cart = useSelector(state => state.cart);
   useEffect(() => {
     const fetchProduct = async() => {
       setLoading(true)
@@ -33,7 +34,7 @@ const Product = () => {
     }
     fetchProduct()
   }, [])
-
+  
   const countItem = (count) => {
     setItemCount(count)
   }
@@ -59,6 +60,8 @@ const Product = () => {
     localStorage.setItem('checkout', JSON.stringify([item]));
     navigate('/checkout')
   }
+
+  const addedToCart = cart.cart.filter(c => param.id === c.id).length > 0 ? <p className="text-sucess">Added to cart!</p> : null;
   const PDP = product ? (
     <Container>
       <Breadcrumb className="my-4">
@@ -89,6 +92,7 @@ const Product = () => {
               <button className="btn btn-secondary" onClick={addItemToCart}>Add to cart</button>
             </div>
           </div>
+          {addedToCart}
         </Col>
       </Row>
     </Container>

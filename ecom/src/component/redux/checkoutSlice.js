@@ -5,15 +5,16 @@ const checkSteps = {
     paymentSteps: false,
     orderConfirm: false,
     orderInfo: {},
-    shippingInfo: {}
+    shippingDetails: {}
 }
+const saveInfo = JSON.parse(localStorage.getItem('shippingInfo')) || null;
+checkSteps.shippingDetails = saveInfo;
 export const checkoutSlice = createSlice({
     name: 'checkout',
     initialState: checkSteps,
     reducers: {
-        setShippingInfo: (state, action) => {
-            state.shippingInfo = action.payload,
-            state.shippingSteps = true
+        setShippingInfoRx: (state, action) => {
+            state.shippingSteps = action.payload;
         },
         setOrderInfo: (state, action) => {
             state.orderInfo = action.payload
@@ -21,9 +22,12 @@ export const checkoutSlice = createSlice({
         setOrderConfirm: (state) => {
             state.orderConfirm = true;
             state.paymentSteps = true;
+        },
+        setShippingDetails: (state, action) => {
+            state.shippingDetails =  action.payload
         }
     }
 })
 
-export const {setOrderConfirm, setShippingInfo, setOrderInfo} = checkoutSlice.actions;
+export const {setOrderConfirm, setShippingInfoRx, setOrderInfo, setShippingDetails} = checkoutSlice.actions;
 export default checkoutSlice.reducer;

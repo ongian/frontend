@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import ShippingInfo from './forms/ShippingInfo';
+import PaymentMethod from './forms/PaymentMethod';
 import { useSelector } from 'react-redux';
 const Checkout = () => {
 const [checkoutItem, setCheckoutItem] = useState([]);
 const checkout = useSelector((state) => state.checkout);
+
 console.log(checkout)
 useEffect(() => {
     const checkoutLS = JSON.parse(localStorage.getItem('checkout')) || [];
@@ -12,7 +14,7 @@ useEffect(() => {
 }, []);
 
 
-
+console.log(checkout)
 const orderInfo = (
     <Col md={6} sm={12}>
         {checkoutItem.length > 0 ? (<>
@@ -44,8 +46,8 @@ const orderInfo = (
                     <h1>Checkout</h1>
                 </Col>
                 <Row>
-                    <ShippingInfo />
-                    {orderInfo}
+                {checkout.shippingSteps ? <PaymentMethod /> : <ShippingInfo />}
+                {orderInfo}
                 </Row>
             </Container>
         </section>

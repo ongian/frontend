@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Row, Col } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
-import { setShippingInfo } from '../../../redux/checkoutSlice';
+import { setShippingInfoRx, setShippingDetails } from '../../../redux/checkoutSlice';
 const ShippingInfo = () => {
     const [savedShippingInfo, setSavedShippingInfo] = useState(null);
     const [shippingInfo, setShippingInfo] = useState({
@@ -40,6 +40,16 @@ const ShippingInfo = () => {
         }
     }, []);
 
+    useEffect(() => {
+        const errors = Object.values(formError).every((error) => error === '');
+        const shippingInfos = Object.values(shippingInfo).slice(0, -1).every(s => s !== '');
+        console.log(shippingInfos)
+        if(errors && shippingInfos){
+            localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
+            dispatch(setShippingDetails(shippingInfo))
+        }
+        dispatch(setShippingInfoRx(errors && shippingInfos));
+    }, [formError])
     const eventHandler = (e) => {
         const {name, value} = e.target;
         setShippingInfo((prev) => ({
@@ -78,6 +88,7 @@ const ShippingInfo = () => {
                     ...prev,
                     contact: 'Invalid Email or Phone'
                 }))
+                dispatch(setShippingInfoRx(false));
             }
         }
         if(zip !== '' && /^\d{4,5}$/.test(zip)){
@@ -91,15 +102,10 @@ const ShippingInfo = () => {
                 zip: 'Please enter a valid zip code'
             }))
         }
-
-        const errors = Object.values(formError).every((error) => error === '');
-        if(errors){
-            localStorage.setItem('shippingInfo', JSON.stringify(shippingInfo));
-            dispatch(setShippingInfo(shippingInfo));
-        }
+        
     };
 
-
+    console.log(formError)
     return (
         <Col md={6} sm={12}>
             <form onSubmit={(e) => submitHandler(e)}>
