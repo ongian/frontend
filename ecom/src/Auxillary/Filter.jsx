@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react'
 import InputRange from './InputRange';
-import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { setCategories, setRating } from '../component/redux/filterSlice';
 import Rating from './Rating';
@@ -12,12 +11,7 @@ const Filter = ({filterProps}) => {
         rates: [],
         prices: []
     });
-    
-    const [tobeFilter, setTobeFilter] = useState({
-        categories: [],
-        rates: [],
-        prices: []
-    })
+
     useEffect(() => {
         if(filterProps !== null){
             const filterCat = filterProps.map(f => f.category);
